@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+<<<<<<< HEAD
 @tailwind utilities;
 
 body {
@@ -26,3 +27,6 @@ body {
 ::-webkit-scrollbar-thumb:hover {
 	background: #242424;
 }
+=======
+@tailwind utilities;
+>>>>>>> 297c35bee18f47229eeca3372a4aa584d191aecc
