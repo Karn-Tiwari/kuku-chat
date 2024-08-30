@@ -1,5 +1,4 @@
 import path from "path";
-
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -13,20 +12,24 @@ import { app, server } from "./socket/socket.js";
 
 dotenv.config();
 
+const __dirname = path.resolve();
+// PORT should be assigned after calling dotenv.config() because we need to access the env variables. Didn't realize while recording the video. Sorry for the confusion.
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json()); //to parse the incoming request with JSON payloads || ise ki wajah se req.body se hum username fullName password wagera ko access kar sakte hain
-app.use(cookieParser()); //Isko use kiya gaya hai ki jab koi ek send kisi reciever ko message bhejega to usko check karna padega ki wo authentic hai ki nhi wo cookie se check hoga aur usko middleware me use karne k liye ye use hua hai cookieParser
+app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
+app.use(cookieParser());
+
 app.use("/api/auth", authRoutes);
-app.use("/api/message", messageRoutes);
+app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
-// app.length("/", (req, res) => {
-//     //root route "http://localhost:5000/"
-//   res.send("Welcome to the server");
-// });
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 server.listen(PORT, () => {
   connectToMongoDB();
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server Running on port ${PORT}`);
 });
